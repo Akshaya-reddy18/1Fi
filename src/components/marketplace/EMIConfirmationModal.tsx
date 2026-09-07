@@ -1,6 +1,6 @@
 import React from 'react';
 import { useShop } from '../../context/ShopContext';
-import { CheckCircle2, X, Sparkles } from 'lucide-react';
+import { CheckCircle2, X } from 'lucide-react';
 
 export const EMIConfirmationModal: React.FC = () => {
   const {
@@ -76,7 +76,7 @@ export const EMIConfirmationModal: React.FC = () => {
           className="w-full py-3 px-4 rounded-2xl bg-fi-purple hover:bg-fi-purple-700 active:scale-98 text-white text-xs font-bold shadow-fi-purple transition-all flex items-center justify-center gap-1.5"
         >
           <span>Done</span>
-          <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+          
         </button>
       </div>
     </div>

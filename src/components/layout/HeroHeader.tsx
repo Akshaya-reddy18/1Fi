@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { ShopTabs } from './ShopTabs';
 
 export const HeroHeader: React.FC = () => {
@@ -15,9 +15,9 @@ export const HeroHeader: React.FC = () => {
           
           {/* Left Text Column */}
           <div className="col-span-7 sm:col-span-7 pt-2">
-            {/* Pill Badge */}
+            {/* Pill Badge matching screenshot */}
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[11px] sm:text-xs font-semibold tracking-wide text-white/95 mb-3 shadow-inner">
-              <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-pulse" />
+              <span className="text-yellow-300 text-xs">✦</span>
               <span>NO-COST EMIs</span>
             </div>
 

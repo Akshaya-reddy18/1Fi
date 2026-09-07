@@ -9,7 +9,6 @@ import {
   ArrowLeft,
   Share2,
   Heart,
-  Star,
   ShieldCheck,
   Truck,
   Sparkles,
@@ -150,18 +149,13 @@ export const ProductDetailsView: React.FC = () => {
           )}
         </div>
 
-        {/* Product Title, Rating, and Price Info */}
+        {/* Product Title and Price Info */}
         <div className="bg-white rounded-3xl p-5 border border-[#EAEBF0] shadow-fi-card space-y-3">
           
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-extrabold uppercase tracking-wider text-fi-purple">
               {selectedProduct.brand} • {selectedProduct.partnerStore || 'Official 1Fi Partner'}
             </span>
-            <div className="flex items-center gap-1 text-xs font-bold text-neutral-800 bg-amber-50 px-2 py-1 rounded-lg border border-amber-200">
-              <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-              <span>{selectedProduct.rating}</span>
-              <span className="text-neutral-400 font-normal">({selectedProduct.reviewCount})</span>
-            </div>
           </div>
 
           <h1 className="text-lg sm:text-xl font-extrabold text-[#111827] leading-snug">

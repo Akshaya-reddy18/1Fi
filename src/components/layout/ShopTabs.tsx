@@ -1,15 +1,14 @@
 import React from 'react';
 import { useShop } from '../../context/ShopContext';
 import { ShopTabType } from '../../types/shop';
-import { Sparkles } from 'lucide-react';
 
 export const ShopTabs: React.FC = () => {
   const { activeShopTab, setActiveShopTab, selectedProduct, closeProductDetails } = useShop();
 
-  const tabs: { id: ShopTabType; label: string; isNew?: boolean }[] = [
+  const tabs: { id: ShopTabType; label: string }[] = [
     { id: 'top-brands', label: 'Top Brands' },
     { id: 'nearby-stores', label: 'Nearby Stores' },
-    { id: 'marketplace', label: '1Fi Marketplace', isNew: true },
+    { id: 'marketplace', label: '1Fi Marketplace' },
   ];
 
   const handleTabClick = (tabId: ShopTabType) => {
@@ -33,18 +32,7 @@ export const ShopTabs: React.FC = () => {
                 : 'text-[#52527A] hover:text-[#2E2E48] active:scale-98'
             }`}
           >
-            <div className="flex items-center justify-center gap-1">
-              <span>{tab.label}</span>
-              {tab.isNew && !isActive && (
-                <span className="flex h-1.5 w-1.5 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-fi-purple opacity-75" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-fi-purple" />
-                </span>
-              )}
-              {tab.isNew && isActive && (
-                <Sparkles className="w-3 h-3 text-fi-purple animate-pulse inline-block" />
-              )}
-            </div>
+            <span>{tab.label}</span>
 
             {/* Active Purple Underline Indicator centered under text */}
             {isActive && (

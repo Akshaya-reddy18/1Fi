@@ -1,6 +1,6 @@
 import React from 'react';
 import { useShop } from '../../context/ShopContext';
-import { TrendingUp, ShieldCheck, Sparkles, Store, ArrowRight } from 'lucide-react';
+import { TrendingUp, ShieldCheck, Store, ArrowRight } from 'lucide-react';
 
 export const HomeView: React.FC = () => {
   const { setActiveNavTab, setActiveShopTab, availableMFLimit, totalMFLimit } = useShop();
@@ -43,9 +43,8 @@ export const HomeView: React.FC = () => {
       {/* Quick Marketplace Action Promo */}
       <div className="bg-white rounded-3xl p-5 border border-[#EAEBF0] shadow-fi-card">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-extrabold text-neutral-900 text-sm sm:text-base flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-fi-purple" />
-            <span>New: 1Fi Marketplace</span>
+          <h3 className="font-extrabold text-neutral-900 text-sm sm:text-base">
+            New: 1Fi Marketplace
           </h3>
           <span className="text-xs font-bold text-fi-purple bg-fi-purple-50 px-2.5 py-0.5 rounded-full border border-fi-purple-100">
             Live

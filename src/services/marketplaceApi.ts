@@ -68,9 +68,6 @@ export class MarketplaceApi {
           case 'price-high':
             results.sort((a, b) => b.basePrice - a.basePrice);
             break;
-          case 'rating':
-            results.sort((a, b) => b.rating - a.rating);
-            break;
           case 'featured':
           default:
             break;

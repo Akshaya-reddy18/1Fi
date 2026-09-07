@@ -1,7 +1,7 @@
 import React from 'react';
 import { Product } from '../../types/product';
 import { useShop } from '../../context/ShopContext';
-import { Star, ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -44,15 +44,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       {/* Product Information */}
       <div className="flex-1 flex flex-col">
-        {/* Brand & Rating */}
+        {/* Brand */}
         <div className="flex items-center justify-between gap-1 mb-1">
           <span className="text-[10px] font-extrabold uppercase tracking-wider text-fi-purple">
             {product.brand}
           </span>
-          <div className="flex items-center gap-0.5 text-[11px] font-bold text-neutral-800 bg-amber-50 px-1.5 py-0.5 rounded-md border border-amber-200">
-            <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
-            <span>{product.rating}</span>
-          </div>
         </div>
 
         {/* Product Name */}

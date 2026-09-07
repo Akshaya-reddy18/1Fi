@@ -40,8 +40,6 @@ export interface Product {
   name: string;
   brand: string;
   category: ProductCategory;
-  rating: number;
-  reviewCount: number;
   basePrice: number;
   originalPrice?: number;
   discountPercentage?: number;
@@ -61,7 +59,7 @@ export interface Product {
   deliveryDays?: string;
 }
 
-export type SortOption = 'featured' | 'price-low' | 'price-high' | 'rating';
+export type SortOption = 'featured' | 'price-low' | 'price-high';
 
 export interface ProductFilterParams {
   category?: ProductCategory;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useShop } from '../../context/ShopContext';
-import { CheckCircle2, Circle, Sparkles, Shield, TrendingDown, RotateCcw } from 'lucide-react';
+import { CheckCircle2, Circle, Sparkles, Shield, TrendingDown, RotateCcw, ArrowRight } from 'lucide-react';
 
 export const EMIPlanSelector: React.FC = () => {
   const {
@@ -10,6 +10,7 @@ export const EMIPlanSelector: React.FC = () => {
     isLoadingEMIPlans,
     emiPlansError,
     refetchEMIPlans,
+    openProceedModal,
   } = useShop();
 
   if (isLoadingEMIPlans) {
@@ -40,7 +41,7 @@ export const EMIPlanSelector: React.FC = () => {
   }
 
   return (
-    <div className="py-3 space-y-3">
+    <div className="py-3 space-y-3.5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -131,7 +132,7 @@ export const EMIPlanSelector: React.FC = () => {
       </div>
 
       {/* 1Fi Collateral Info Footer */}
-      <div className="bg-[#F3F0FF] rounded-2xl p-3 border border-fi-purple-200 flex items-start gap-2.5 mt-2">
+      <div className="bg-[#F3F0FF] rounded-2xl p-3 border border-fi-purple-200 flex items-start gap-2.5">
         <Shield className="w-4 h-4 text-fi-purple flex-shrink-0 mt-0.5" />
         <div className="text-xs text-[#42207A] leading-snug">
           <p className="font-bold text-fi-purple">1Fi Mutual Fund Backed Guarantee</p>
@@ -139,6 +140,26 @@ export const EMIPlanSelector: React.FC = () => {
             Your mutual funds will stay invested and keep compounding returns while serving as loan collateral. Zero paperwork!
           </p>
         </div>
+      </div>
+
+      {/* Primary CTA Button directly below EMI Plans */}
+      <div className="pt-2">
+        <button
+          disabled={!selectedEMIPlan}
+          onClick={openProceedModal}
+          className={`w-full py-3.5 px-5 rounded-2xl font-extrabold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+            selectedEMIPlan
+              ? 'bg-fi-purple hover:bg-fi-purple-700 active:scale-[0.99] text-white shadow-fi-purple cursor-pointer'
+              : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
+          }`}
+        >
+          <span>
+            {selectedEMIPlan
+              ? `Proceed with ${selectedEMIPlan.durationMonths} Months EMI (₹${selectedEMIPlan.monthlyAmount.toLocaleString('en-IN')}/mo)`
+              : 'Select an EMI Plan to Proceed'}
+          </span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );

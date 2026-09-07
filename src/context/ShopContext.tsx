@@ -5,7 +5,6 @@ import {
   EMIPlan,
   ProductCategory,
   SortOption,
-  EMIApplicationResponse,
 } from '../types/product';
 import { ShopTabType, MainNavTab } from '../types/shop';
 import { MarketplaceApi } from '../services/marketplaceApi';
@@ -51,13 +50,10 @@ interface ShopContextType {
   emiPlansError: string | null;
   refetchEMIPlans: () => void;
   
-  // Proceed flow modal & submission
+  // Proceed flow modal
   isProceedModalOpen: boolean;
   openProceedModal: () => void;
   closeProceedModal: () => void;
-  isOrderPlaced: boolean;
-  orderConfirmation: EMIApplicationResponse | null;
-  submitOrder: () => Promise<void>;
 
   // Testing & Error simulation
   isSimulateError: boolean;
@@ -94,10 +90,8 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoadingEMIPlans, setIsLoadingEMIPlans] = useState(false);
   const [emiPlansError, setEmiPlansError] = useState<string | null>(null);
 
-  // Order submission
+  // Modal
   const [isProceedModalOpen, setIsProceedModalOpen] = useState(false);
-  const [isOrderPlaced, setIsOrderPlaced] = useState(false);
-  const [orderConfirmation, setOrderConfirmation] = useState<EMIApplicationResponse | null>(null);
 
   // Error simulation
   const [isSimulateError, setIsSimulateError] = useState(false);
@@ -113,8 +107,6 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoadingProductDetails(true);
       setProductDetailsError(null);
       setSelectedEMIPlan(null);
-      setIsOrderPlaced(false);
-      setOrderConfirmation(null);
 
       const product = await MarketplaceApi.getProductById(productId);
       setSelectedProduct(product);
@@ -134,8 +126,6 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setSelectedStorage(product.variants?.storage?.[0] || null);
     setSelectedColor(product.variants?.colors?.[0] || null);
     setSelectedEMIPlan(null);
-    setIsOrderPlaced(false);
-    setOrderConfirmation(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -146,8 +136,6 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setSelectedColor(null);
     setSelectedEMIPlan(null);
     setIsProceedModalOpen(false);
-    setIsOrderPlaced(false);
-    setOrderConfirmation(null);
   };
 
   // Compute effective price based on selected storage/color variant
@@ -189,23 +177,6 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     fetchEMIPlans();
   }, [selectedProduct?.id, currentEffectivePrice]);
-
-  const submitOrder = async () => {
-    if (!selectedProduct || !selectedEMIPlan) return;
-
-    const res = await MarketplaceApi.submitEMIApplication({
-      productId: selectedProduct.id,
-      productName: selectedProduct.name,
-      variantDetails: `${selectedStorage?.name || ''} ${selectedColor?.name || ''}`.trim(),
-      totalAmount: currentEffectivePrice,
-      emiPlanId: selectedEMIPlan.id,
-      durationMonths: selectedEMIPlan.durationMonths,
-      monthlyAmount: selectedEMIPlan.monthlyAmount,
-    });
-
-    setOrderConfirmation(res);
-    setIsOrderPlaced(true);
-  };
 
   const toggleSimulateError = () => {
     const nextVal = !isSimulateError;
@@ -259,9 +230,6 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isProceedModalOpen,
         openProceedModal,
         closeProceedModal,
-        isOrderPlaced,
-        orderConfirmation,
-        submitOrder,
         isSimulateError,
         toggleSimulateError,
         availableMFLimit,

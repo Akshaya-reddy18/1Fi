@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useShop } from '../../context/ShopContext';
 import { VariantSelector } from './VariantSelector';
 import { EMIPlanSelector } from './EMIPlanSelector';
-import { EMIProceedModal } from './EMIProceedModal';
+import { EMIConfirmationModal } from './EMIConfirmationModal';
 import { SkeletonCard } from '../common/SkeletonCard';
 import { ErrorState } from '../common/ErrorState';
 import {
@@ -73,7 +73,7 @@ export const ProductDetailsView: React.FC = () => {
       <div className="sticky top-0 bg-white/95 backdrop-blur-md px-4 py-3 border-b border-neutral-100 flex items-center justify-between z-30 shadow-sm">
         <button
           onClick={closeProductDetails}
-          className="flex items-center gap-1.5 p-1.5 -ml-1.5 rounded-full text-neutral-700 hover:bg-neutral-100 active:scale-95 transition-all"
+          className="flex items-center gap-1.5 p-1.5 -ml-1.5 rounded-full text-neutral-700 hover:bg-neutral-100 active:scale-95 transition-all cursor-pointer"
         >
           <ArrowLeft className="w-5 h-5 text-neutral-800" />
           <span className="text-xs font-bold text-neutral-700">Back</span>
@@ -267,7 +267,7 @@ export const ProductDetailsView: React.FC = () => {
             </button>
           </div>
 
-          {/* Tab 1: EMI Plans */}
+          {/* Tab 1: EMI Plans & In-line Proceed CTA */}
           {activeTab === 'emi' && <EMIPlanSelector />}
 
           {/* Tab 2: Key Highlights */}
@@ -330,7 +330,7 @@ export const ProductDetailsView: React.FC = () => {
               </div>
             ) : (
               <div>
-                <span className="text-[10px] text-neutral-400 block">Select a plan above</span>
+                <span className="text-[10px] text-neutral-400 block">Select a plan</span>
                 <span className="text-base font-bold text-neutral-800">
                   ₹{currentEffectivePrice.toLocaleString('en-IN')}
                 </span>
@@ -342,7 +342,7 @@ export const ProductDetailsView: React.FC = () => {
           <button
             disabled={!selectedEMIPlan}
             onClick={openProceedModal}
-            className={`px-6 sm:px-8 py-3.5 rounded-2xl font-extrabold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+            className={`px-6 sm:px-8 py-3.5 rounded-2xl font-extrabold text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
               selectedEMIPlan
                 ? 'bg-fi-purple text-white shadow-fi-purple hover:bg-fi-purple-700 active:scale-95'
                 : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
@@ -354,8 +354,8 @@ export const ProductDetailsView: React.FC = () => {
         </div>
       </div>
 
-      {/* Proceed Summary & MF Pledge Modal */}
-      <EMIProceedModal />
+      {/* Confirmation Modal */}
+      <EMIConfirmationModal />
     </div>
   );
 };

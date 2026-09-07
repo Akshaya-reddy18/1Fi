@@ -3,8 +3,6 @@ import {
   EMIPlan,
   ProductFilterParams,
   ProductCategory,
-  EMIApplicationRequest,
-  EMIApplicationResponse,
 } from '../types/product';
 import { BrandItem, NearbyStoreItem } from '../types/shop';
 import { MOCK_PRODUCTS } from '../data/mockProducts';
@@ -12,24 +10,17 @@ import { MOCK_BRANDS } from '../data/mockBrands';
 import { MOCK_STORES } from '../data/mockStores';
 import { EMI_TENURE_POLICIES, STANDARD_CREDIT_CARD_ANNUAL_RATE } from '../data/emiPlans';
 
-// Simulated realistic network latency in milliseconds
-const API_LATENCY_MS = 300;
+const API_LATENCY_MS = 250;
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
  * 1Fi Marketplace API Service Layer
- * 
- * Abstraction layer separating UI components from underlying data sources.
- * In a production deployment, this class functions as the HTTP/REST client
- * (e.g., fetch('/api/v1/marketplace/...')) without requiring changes to UI components.
+ * Clean data-access layer for products, stores, brands, and EMI calculations.
  */
 export class MarketplaceApi {
   private static simulateNetworkError = false;
 
-  /**
-   * Diagnostic flag for testing error states & boundaries in evaluations
-   */
   public static setSimulateError(enable: boolean) {
     this.simulateNetworkError = enable;
   }
@@ -39,24 +30,22 @@ export class MarketplaceApi {
   }
 
   /**
-   * Fetch products with optional server-side/service-level filtering & sorting
+   * Fetch products with optional filtering & sorting
    */
   public static async getProducts(filters?: ProductFilterParams): Promise<Product[]> {
     await delay(API_LATENCY_MS);
 
     if (this.simulateNetworkError) {
-      throw new Error('Network Error (503): Unable to connect to 1Fi Marketplace API gateway. Please check your connection.');
+      throw new Error('Network Error: Unable to connect to 1Fi Marketplace server.');
     }
 
     let results = [...MOCK_PRODUCTS];
 
     if (filters) {
-      // Category filter
       if (filters.category && filters.category !== 'all') {
         results = results.filter((p) => p.category === filters.category);
       }
 
-      // Search query across product name, brand, description, and category
       if (filters.searchQuery && filters.searchQuery.trim() !== '') {
         const q = filters.searchQuery.toLowerCase().trim();
         results = results.filter((p) =>
@@ -67,12 +56,10 @@ export class MarketplaceApi {
         );
       }
 
-      // Brand filter
       if (filters.selectedBrand) {
         results = results.filter((p) => p.brand.toLowerCase() === filters.selectedBrand?.toLowerCase());
       }
 
-      // Sorting logic
       if (filters.sortBy) {
         switch (filters.sortBy) {
           case 'price-low':
@@ -113,13 +100,13 @@ export class MarketplaceApi {
   }
 
   /**
-   * Fetch & dynamically compute 1Fi EMI Plans for a product and given configuration price
+   * Fetch & dynamically compute 1Fi EMI Plans for a product and given effective price
    */
   public static async getEMIPlans(productId: string, effectivePrice: number): Promise<EMIPlan[]> {
-    await delay(120);
+    await delay(100);
 
     if (this.simulateNetworkError) {
-      throw new Error('Failed to retrieve EMI rate cards from 1Fi financing engine.');
+      throw new Error('Failed to retrieve EMI rate cards.');
     }
 
     if (!effectivePrice || effectivePrice <= 0) {
@@ -135,7 +122,6 @@ export class MarketplaceApi {
       const monthlyPrincipal = Math.round(effectivePrice / durationMonths);
       const monthlyInterest = isNoCost ? 0 : Math.round(totalInterest / durationMonths);
 
-      // Compare against standard credit card APR (16%)
       const standardCCInterest = Math.round(effectivePrice * STANDARD_CREDIT_CARD_ANNUAL_RATE * (durationMonths / 12));
       const savings = isNoCost ? standardCCInterest : Math.max(0, standardCCInterest - totalInterest);
 
@@ -153,34 +139,6 @@ export class MarketplaceApi {
         savingsText: isNoCost ? `Save ₹${savings.toLocaleString('en-IN')} vs Credit Cards` : undefined,
       };
     });
-  }
-
-  /**
-   * Submit an EMI application backed by Mutual Funds collateral
-   */
-  public static async submitEMIApplication(request: EMIApplicationRequest): Promise<EMIApplicationResponse> {
-    await delay(800);
-
-    if (this.simulateNetworkError) {
-      throw new Error('EMI Authorization failed: Network error occurred during mutual fund pledge.');
-    }
-
-    const today = new Date();
-    const firstEmiDate = new Date(today.setMonth(today.getMonth() + 1)).toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
-
-    return {
-      success: true,
-      orderId: `1FI-${Math.floor(100000 + Math.random() * 900000)}`,
-      firstEmiDate,
-      monthlyAmount: request.monthlyAmount,
-      durationMonths: request.durationMonths,
-      pledgedMFAmount: request.totalAmount,
-      timestamp: new Date().toISOString(),
-    };
   }
 
   /**
@@ -225,7 +183,7 @@ export class MarketplaceApi {
   }
 
   /**
-   * Static category taxonomy
+   * Categories list
    */
   public static getCategories(): { id: ProductCategory; label: string }[] {
     return [

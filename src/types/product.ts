@@ -8,10 +8,10 @@ export type ProductCategory =
 
 export interface ProductVariant {
   id: string;
-  name: string; // e.g. "256 GB - Natural Titanium" or "16GB RAM / 512GB SSD"
+  name: string;
   type: 'storage' | 'color' | 'size' | 'combo';
   value: string;
-  priceDelta: number; // additional cost over base price or adjustment
+  priceDelta: number;
   image?: string;
   inStock: boolean;
 }
@@ -24,7 +24,6 @@ export interface EMIPlan {
   interestRate: number; // 0 for No-Cost EMI
   isNoCost: boolean;
   processingFee: number;
-  cashback?: number;
   popular?: boolean;
   savingsText?: string;
   monthlyPrincipal: number;
@@ -57,9 +56,9 @@ export interface Product {
     colors?: ProductVariant[];
   };
   inStock: boolean;
-  badge?: string; // e.g., "Trending", "Bestseller", "New Launch"
-  partnerStore?: string; // e.g., "Apple Authorised Reseller", "Croma", "Reliance Digital"
-  deliveryDays?: string; // e.g., "Free Delivery by Tomorrow"
+  badge?: string;
+  partnerStore?: string;
+  deliveryDays?: string;
 }
 
 export type SortOption = 'featured' | 'price-low' | 'price-high' | 'rating';
@@ -71,24 +70,4 @@ export interface ProductFilterParams {
   minPrice?: number;
   maxPrice?: number;
   selectedBrand?: string;
-}
-
-export interface EMIApplicationRequest {
-  productId: string;
-  productName: string;
-  variantDetails: string;
-  totalAmount: number;
-  emiPlanId: string;
-  durationMonths: number;
-  monthlyAmount: number;
-}
-
-export interface EMIApplicationResponse {
-  success: boolean;
-  orderId: string;
-  firstEmiDate: string;
-  monthlyAmount: number;
-  durationMonths: number;
-  pledgedMFAmount: number;
-  timestamp: string;
 }
